@@ -6,8 +6,9 @@ public class Launcher {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Entrez une commande : ");
         String entree = scanner.nextLine();
-        if (!entree.equals("quit")) {
+        while (!entree.equals("quit")) {
             System.out.println("Unknown command");
+            entree = scanner.nextLine();
         }
     }
 }

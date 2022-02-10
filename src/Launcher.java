@@ -1,29 +1,26 @@
-import java.util.Scanner;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 public class Launcher {
+
     public static void main(String[] args) {
         System.out.println("un texte de bienvenue");
         Scanner scanner = new Scanner(System.in);
         String entree = "";
-
-        while (!entree.equals("quit")) {
+        boolean running = true;
+        while (running) {
             System.out.println("Entrez une commande : ");
             entree = scanner.nextLine();
-            if (entree.equals("fibo")) {
-                System.out.println("Entrez un nombre : ");
-                int n = scanner.nextInt();
-                int rang1 = 0;
-                int rang2 = 1;
-                for (int i = 3; i <= n + 1; i++) {
-                    int temp = rang1;
-                    rang1 = rang2;
-                    rang2 = temp + rang2;
+            Command[] commands = {new Quit(), new Fibo(), new Freq()};
+            boolean executed = false;
+            for (int i = 0; i < commands.length && executed == false; i++) {
+                if (entree.equals(commands[i].name())){
+                    running = commands[i].run(scanner);
+                    executed = true;
                 }
-                System.out.println(rang2);
-                scanner.nextLine();
             }
-            else
-            {
+            if (executed == false) {
                 System.out.println("Unknown command");
             }
         }

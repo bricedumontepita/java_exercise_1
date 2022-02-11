@@ -1,15 +1,15 @@
+import java.lang.reflect.Array;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Freq implements Command{
-    public static String[] findMostUseWords(String[] mots, int number)
+
+    public ArrayList<String> findMostUseWords(String[] mots, int number)
     {
-        String[] mostUsed = new String[number];
+        ArrayList<String> mostUsed = new ArrayList<>();
         Map<String, Integer> dic = new HashMap<>();
-        for (int i = 0; i < mots.length - 1; i++) {
+
+        for (int i = 0; i < mots.length; i++) {
             if (dic.containsKey(mots[i]))
             {
                 dic.replace(mots[i], dic.get(mots[i])  + 1);
@@ -31,11 +31,28 @@ public class Freq implements Command{
                     maxS = (String)m.getKey();
                 }
             }
-            mostUsed[i] = maxS;
+            mostUsed.add(maxS);
             dic.replace(maxS, -1);
         }
 
         return mostUsed;
+    }
+
+    public String readFile(Scanner scanner)
+    {
+        System.out.println("Entrez un chemin de fichier : ");
+        String fichier = scanner.nextLine();
+        try {
+            String contenu = java.nio.file.Files.readString(Paths.get(fichier));
+            contenu = contenu.replaceAll("\\p{Punct}", " ");
+            contenu = contenu.replaceAll("\\\n+", " ");
+            contenu = contenu.replaceAll("\\\s+", " ");
+            contenu = contenu.toLowerCase(Locale.ROOT);
+            return contenu;
+        } catch (Exception e) {
+            System.out.println("Unreadable file: " + e.getClass().getName() + " " + e.getMessage());
+        }
+        return "";
     }
 
     @Override
@@ -45,20 +62,12 @@ public class Freq implements Command{
 
     @Override
     public boolean run(Scanner scanner) {
-        System.out.println("Entrez un chemin de fichier : ");
-        String fichier = scanner.nextLine();
-        try {
-            String contenu = java.nio.file.Files.readString(Paths.get(fichier));
-            contenu = contenu.replaceAll("\\p{Punct}", " ");
-            contenu = contenu.replaceAll("\\\n+", " ");
-            contenu = contenu.replaceAll("\\\s+", " ");
-            contenu = contenu.toLowerCase(Locale.ROOT);
-            String[] mots = contenu.split(" ");
-            String[] mostUsed = findMostUseWords(mots, 3);
-            System.out.println(mostUsed[0] + " " + mostUsed[1] + " " + mostUsed[2]);
-        } catch (Exception e) {
-            System.out.println("Unreadable file: " + e.getClass().getName() + " " + e.getMessage());
-        }
+        String contenu = readFile(scanner);
+        if (contenu.equals(""))
+            return true;
+        String[] mots = contenu.split(" ");
+        ArrayList<String> mostUsed = findMostUseWords(mots, 3);
+        System.out.println(mostUsed.get(0) + " " + mostUsed.get(1) + " " + mostUsed.get(2));
         return true;
     }
 }

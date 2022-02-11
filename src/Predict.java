@@ -18,6 +18,7 @@ public class Predict extends Freq implements Command {
     public void demandeMot(Map<String, String> dic, Scanner scanner) {
         System.out.println("Entrez un mot : ");
         String mot = scanner.nextLine();
+        mot = mot.toLowerCase(Locale.ROOT);
         if (!dic.containsKey(mot))
         {
             System.out.println("Aucune prédiction pour ce mot");

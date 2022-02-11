@@ -7,7 +7,7 @@ public class Freq implements Command{
     public ArrayList<String> findMostUseWords(String[] mots, int number)
     {
         ArrayList<String> mostUsed = new ArrayList<>();
-        Map<String, Integer> dic = new HashMap<>();
+        Map<String, Integer> dic = new LinkedHashMap<>();
 
         for (int i = 0; i < mots.length; i++) {
             if (dic.containsKey(mots[i]))
@@ -26,7 +26,7 @@ public class Freq implements Command{
             String maxS = "";
             for (Map.Entry m : dic.entrySet()) {
                 Integer value = (Integer)m.getValue();
-                if (Integer.compare(value , max) > 0) {
+                if (value.compareTo(max) == 1) {
                     max = value;
                     maxS = (String)m.getKey();
                 }
@@ -34,7 +34,6 @@ public class Freq implements Command{
             mostUsed.add(maxS);
             dic.replace(maxS, -1);
         }
-
         return mostUsed;
     }
 

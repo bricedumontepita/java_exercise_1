@@ -24,7 +24,8 @@ public class Predict extends Freq implements Command {
             System.out.println("Aucune prédiction pour ce mot");
             return;
         }
-        int limit = 20;
+        System.out.print(mot + " ");
+        int limit = 19;
         while (limit > 0 && dic.containsKey(mot))
         {
             mot = dic.get(mot);
